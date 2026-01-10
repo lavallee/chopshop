@@ -1,6 +1,6 @@
-# Chopshop
+# Chop Shop
 
-Chopshop is a Claude Code skill pack plus helper scripts that take a rough product idea and turn it into a beads-compatible execution plan. The system runs through three guided agents—**Triage**, **Architect**, and **Planner**—to pressure-test the product vision, produce a pragmatic technical design, and emit ready-to-run tasks for AI coding agents or humans.
+Chop Shop is a Claude Code skill pack plus helper scripts that take a rough product idea and turn it into a beads-compatible execution plan. The system runs through three guided agents—**Triage**, **Architect**, and **Planner**—to pressure-test the product vision, produce a pragmatic technical design, and emit ready-to-run tasks for AI coding agents or humans.
 
 ## How It Works
 
