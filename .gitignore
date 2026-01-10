@@ -1,0 +1,5 @@
+# Chopshop session artifacts (local working data)
+.chopshop/
+
+# Research notes
+*.txt

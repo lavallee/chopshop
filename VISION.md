@@ -1,0 +1,13 @@
+chopshop is a set of Claude skills that translates product vision documents, PRDs, architecture ideas, etc and turns that into implementation plans.
+
+This can be for a new project, or it can be a set of features/ideas that are extending an existing project. 
+
+There are a few different folks working at the chop shop:
+
+First, the triage agent takes all the inputs and assess whether, from a product development perspective, any bits are missing. If this is an existing project, it reviews the current implementation including code and any guiding or supporting materials. It interviews the client to understand what they're trying to accomplish with this batch of work. The client can specify how deep to go with triage. A light triage is just making sure there's enough of a coherent idea to be able to implement. Deep triage can also push on the broader desirability, feasibility, and viability of the resulting product. It can also perform research on the client's behalf to ensure they're working with the best version of their idea. This is about driving implementation clarity, so it should push back on soft/weak spots in the plan. Because the software ultimately developed is of an experimental nature, it can ultimately position unknowns as experiment features to test.
+(We can think of different kind of tasks within triage, such as landscape analysis, go-to-market strategy, etc as sub-agents the triage agent dispatches to.)
+
+Second, the architect agent looks over the full plan including any technical details provided, and gets to work on a technical implementation plan. It asks the client which "mindset" the architect should adopt. It interviews the client to understand what they're trying to accomplish. It can also perform research on the client's behalf to ensure they're working with the best version of their idea. This is about driving implementation clarity, so it should push back on soft/weak spots in the plan. Because the software ultimately developed is of an experimental nature, it can ultimately position unknowns as experiment features to test. Different mindsets steer the implementation toward its proper technical objectives. Is this a one-off personal app or something intended to grow to internet scale? The mindset should help the architect with a set of defaults but the architect should still answer 
+
+Third, the planner takes all this information and itemizes the tasks, including subtasks and larger epics, in a format compatible with the Steve Yegge's beads tool. Let's be sure to research best practices for chunking the work. (e.g. a task should be able to be done within one context window.) There's a fair amount in the repo itself as well as plenty that's been written about it on hackernews and other places.
+
