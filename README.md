@@ -4,9 +4,10 @@ Chop Shop is a Claude Code skill pack plus helper scripts that take a rough prod
 
 ## How It Works
 
-1. **/chopshop/triage** – Reviews your vision document, interviews you about scope, success criteria, and constraints, and produces an approved triage report.
-2. **/chopshop/architect** – Consumes the triage output, captures mindset/scale/stack preferences, and writes a detailed technical plan with phases, risks, and data models.
-3. **/chopshop/planner** – Breaks the architecture into epics and micro-sized tasks, labels them with model + complexity metadata, and exports both `plan.jsonl` (for beads) and a human-readable plan summary.
+1. **/chopshop:triage** – Reviews your vision document, interviews you about scope, success criteria, and constraints, and produces an approved triage report.
+2. **/chopshop:architect** – Consumes the triage output, captures mindset/scale/stack preferences, and writes a detailed technical plan with phases, risks, and data models.
+3. **/chopshop:planner** – Breaks the architecture into epics and micro-sized tasks, labels them with model + complexity metadata, and exports both `plan.jsonl` (for beads) and a human-readable plan summary.
+4. **/chopshop:bootstrap** – Transitions the project from planning to execution: validates git state, initializes beads, imports the plan, and optionally sets up curb integration for autonomous development.
 
 Every run creates a timestamped session inside `.chopshop/sessions/{project}-{YYYYMMDD-HHMMSS}` with `triage-output.md`, `architect-output.md`, and `plan-*` artifacts. Sessions are gitignored because they are working files rather than source.
 
@@ -37,15 +38,27 @@ To uninstall everything that was installed under `~/.chopshop`:
 
 ```bash
 # 1. Clarify the product idea from a VISION.md or provided doc
-/chopshop/triage VISION.md
+/chopshop:triage VISION.md
 
 # 2. Turn the approved requirements into a technical architecture
-/chopshop/architect {session-id}
+/chopshop:architect {session-id}
 
 # 3. Generate beads-ready epics + tasks
-/chopshop/planner {session-id}
+/chopshop:planner {session-id}
 
-# 4. Load and validate the plan in Beads
+# 4. Bootstrap beads and optionally set up curb for autonomous execution
+/chopshop:bootstrap {session-id}
+
+# 5. Start working
+bd ready                    # See available tasks
+curb run --once             # Or run autonomously with curb
+```
+
+### Manual Alternative (skip bootstrap)
+
+If you prefer to set up beads manually:
+
+```bash
 chopshop-load .chopshop/sessions/{session-id}/plan.jsonl
 chopshop-validate
 bd ready
@@ -81,13 +94,42 @@ For deeper context on the execution philosophy, read `CLAUDE.md` for in-depth us
 
 ```
 .
-├── .claude/commands/chopshop/   # Command prompts for triage, architect, planner agents
+├── .claude/commands/chopshop/   # Command prompts for triage, architect, planner, bootstrap agents
 ├── bin/                         # chopshop-load / chopshop-validate helper scripts
 ├── install.sh / uninstall.sh    # Installer utilities (symlink skills + scripts)
 ├── VISION.md                    # High-level description of what Chopshop is and why
 ├── CLAUDE.md                    # Extended documentation shared with Claude
 └── beads-best-practices.txt     # Reference article on Beads workflows
 ```
+
+## Bootstrap & Curb Integration
+
+The `/chopshop:bootstrap` skill bridges planning and execution. It:
+
+1. **Validates prerequisites**: Checks for clean git state, required tools (`bd`, `jq`)
+2. **Initializes beads**: Runs `bd init` with your chosen prefix
+3. **Imports the plan**: Loads `plan.jsonl` into beads
+4. **Sets up curb** (optional): Creates `PROMPT.md` and `AGENT.md` for autonomous execution
+
+### Why Clean Git State Matters
+
+Bootstrap strongly recommends a clean working directory because:
+- The plan import becomes a single atomic commit
+- Agent work creates isolated, reviewable commits
+- Rollback is straightforward if something goes wrong
+- `git bisect` works properly for debugging
+
+### Curb Integration Files
+
+When you opt for curb integration, bootstrap creates:
+
+| File | Purpose |
+|------|---------|
+| `PROMPT.md` | System prompt for the agent, derived from triage/architect context |
+| `AGENT.md` | Build/run instructions (how to test, lint, run the project) |
+| `.curb.json` | Optional curb configuration overrides |
+
+These files let `curb run` work immediately after bootstrap.
 
 ## Workflow Tips
 

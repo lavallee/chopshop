@@ -28,13 +28,16 @@ To uninstall:
 
 ```bash
 # 1. Triage - refine requirements
-/chopshop/triage VISION.md
+/chopshop:triage VISION.md
 
 # 2. Architect - design the system
-/chopshop/architect {session-id}
+/chopshop:architect {session-id}
 
 # 3. Plan - create executable tasks
-/chopshop/planner {session-id}
+/chopshop:planner {session-id}
+
+# 4. Bootstrap - transition to beads-driven development
+/chopshop:bootstrap {session-id}
 ```
 
 ## The Pipeline
@@ -85,6 +88,25 @@ To uninstall:
 **Output:**
 - `plan.jsonl` (beads-compatible, for import)
 - `plan-output.md` (human-readable summary)
+
+### Stage 4: Bootstrap (`/chopshop:bootstrap`)
+
+**Purpose:** Transition from planning to execution.
+
+**Input:** Session ID from planner
+
+**Process:**
+- Validates git state (requires clean working directory)
+- Checks for required tools (`bd`, `jq`)
+- Initializes beads with project prefix
+- Imports plan.jsonl into beads
+- Optionally sets up curb integration (PROMPT.md, AGENT.md)
+- Creates atomic bootstrap commit
+
+**Output:**
+- `.beads/` directory (beads database)
+- `PROMPT.md` (agent system prompt, if curb enabled)
+- `AGENT.md` (build/run instructions, if curb enabled)
 
 ## Session Management
 

@@ -274,20 +274,13 @@ After writing outputs, tell the user:
 > - `.chopshop/sessions/{session-id}/plan.jsonl` (beads-compatible)
 > - `.chopshop/sessions/{session-id}/plan-output.md` (human-readable)
 >
-> **To load tasks into Beads:**
+> **Next step:** Run `/chopshop:bootstrap {session-id}` to initialize beads and start development.
+>
+> Or manually:
 > ```bash
 > chopshop-load .chopshop/sessions/{session-id}/plan.jsonl
-> ```
->
-> **To validate the loaded state:**
-> ```bash
 > chopshop-validate
-> ```
->
-> **To start working:**
-> ```bash
-> bd ready  # See available tasks
-> bd show {first-task-id}  # View task details
+> bd ready
 > ```
 
 ---
